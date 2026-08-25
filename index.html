@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CGPA Booster | Student Learning Platform</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">C</div>
+    <p class="eyebrow">STUDENT SUCCESS PLATFORM</p>
+    <h1>CGPA <span>Booster</span></h1>
+    <p class="auth-subtitle">Plan your study. Master your topics. Boost your CGPA.</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-auth="login">Login</button>
+      <button class="auth-tab" data-auth="signup">Create Account</button>
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <label>Email<input id="loginEmail" type="email" placeholder="you@example.com" required></label>
+      <label>Password<input id="loginPassword" type="password" placeholder="Enter password" required></label>
+      <button class="primary full" type="submit">Login →</button>
+    </form>
+
+    <form id="signupForm" class="auth-form hidden">
+      <label>Full Name<input id="signupName" type="text" placeholder="Your name" required></label>
+      <label>Email<input id="signupEmail" type="email" placeholder="you@example.com" required></label>
+      <label>Password<input id="signupPassword" type="password" minlength="4" placeholder="Minimum 4 characters" required></label>
+      <button class="primary full" type="submit">Create Account →</button>
+    </form>
+
+    <p id="authMessage" class="auth-message"></p>
+    <small class="demo-note">Demo authentication uses your browser's localStorage. No backend is required.</small>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="app hidden">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">C</div>
+      <div><strong>CGPA</strong><span>Booster</span></div>
+    </div>
+
+    <nav>
+      <button class="nav-item active" data-section="dashboard"><span>⌂</span> Dashboard</button>
+      <button class="nav-item" data-section="calculator"><span>◈</span> CGPA Calculator</button>
+      <button class="nav-item" data-section="schedule"><span>◷</span> Study Schedule</button>
+      <button class="nav-item" data-section="quiz"><span>✓</span> Daily Quiz</button>
+      <button class="nav-item" data-section="topics"><span>▣</span> Topic Memory</button>
+      <button class="nav-item" data-section="subjects"><span>◎</span> Subjects</button>
+      <button class="nav-item" data-section="goals"><span>★</span> Goals</button>
+      <button class="nav-item" data-section="resources"><span>▤</span> Resources</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="mini-card">
+        <span class="mini-icon">⚡</span>
+        <div><b>Keep going!</b><small id="sideStreak">0 day streak</small></div>
+      </div>
+      <button class="nav-item" id="themeBtn"><span>☾</span> Dark mode</button>
+      <button class="nav-item logout" id="logoutBtn"><span>↪</span> Logout</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="mobile-brand">CGPA <span>Booster</span></div>
+      <div class="search"><span>⌕</span><input id="searchInput" placeholder="Search subjects, topics, resources..."></div>
+      <div class="profile">
+        <div class="notification">♢<i></i></div>
+        <div class="avatar" id="avatar">BM</div>
+        <div class="profile-text"><b id="userName">Student</b><small>IT Student</small></div>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section active-section">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">STUDENT DASHBOARD</p>
+          <h1>Good morning, <span id="welcomeName">Student</span>! 👋</h1>
+          <p>Build a consistent study routine and turn every topic into progress.</p>
+          <button class="primary" onclick="showSection('schedule')">Plan Today's Study →</button>
+        </div>
+        <div class="hero-orbit">
+          <div class="orbit-ring"></div>
+          <div class="score-circle"><strong id="heroCgpa">7.34</strong><span>Current CGPA</span></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon purple">◈</div><div><small>Current CGPA</small><h2 id="statCgpa">7.34</h2><em class="up">Target 8.00</em></div></div>
+        <div class="stat-card"><div class="stat-icon blue">✓</div><div><small>Topics Mastered</small><h2 id="masteredCount">0</h2><em>Keep revising</em></div></div>
+        <div class="stat-card"><div class="stat-icon green">◎</div><div><small>Quiz Accuracy</small><h2 id="accuracyStat">0%</h2><em>Today's performance</em></div></div>
+        <div class="stat-card"><div class="stat-icon orange">🔥</div><div><small>Study Streak</small><h2 id="streakStat">0 days</h2><em class="up">Stay consistent</em></div></div>
+      </div>
+
+      <div class="content-grid">
+        <div class="panel">
+          <div class="panel-head"><div><h3>Today's Study Schedule</h3><p>Your planned sessions for today</p></div><button class="outline small-btn" onclick="showSection('schedule')">Manage</button></div>
+          <div id="dashboardSchedule"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div><h3>Topic Memory</h3><p>How much you've mastered</p></div><button class="outline small-btn" onclick="showSection('topics')">View</button></div>
+          <div class="memory-summary">
+            <div class="memory-ring"><strong id="memoryPercent">0%</strong></div>
+            <div class="memory-legend">
+              <p><i class="dot mastered"></i> Memorized <b id="memMastered">0</b></p>
+              <p><i class="dot learning"></i> Learning <b id="memLearning">0</b></p>
+              <p><i class="dot notstarted"></i> Not Started <b id="memNotStarted">0</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-grid lower">
+        <div class="panel">
+          <div class="panel-head"><div><h3>Daily Quiz</h3><p>Test today's scheduled subject</p></div><span class="goal-badge">SMART REVISION</span></div>
+          <div class="quiz-preview">
+            <div class="quiz-icon">?</div>
+            <div><h3 id="dashboardQuizSubject">Ready for today's quiz?</h3><p>Answer topic-based MCQs and track your memory.</p></div>
+            <button class="primary small" onclick="startDailyQuiz()">Start Quiz</button>
+          </div>
+        </div>
+
+        <div class="panel tip">
+          <div class="tip-icon">✦</div>
+          <div><span>BOOSTER TIP</span><h3>Active recall beats rereading</h3><p>Study a topic, close your notes, then quiz yourself. Repeat weak topics after 24 hours.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section id="calculator" class="section">
+      <div class="page-title"><p class="eyebrow">ACADEMIC TOOLS</p><h1>CGPA Calculator</h1><p>Calculate semester GPA using grade points and credits.</p></div>
+      <div class="calculator-layout">
+        <div class="panel">
+          <div class="panel-head"><div><h3>Semester Subjects</h3><p>Add subjects, grade points and credits.</p></div><button class="primary small" id="addSubject">+ Add Subject</button></div>
+          <div class="subject-header"><span>Subject</span><span>Grade Point</span><span>Credits</span><span></span></div>
+          <div id="calcRows"></div>
+          <button class="calculate" id="calculateBtn">Calculate Semester GPA</button>
+        </div>
+        <div class="panel result-card">
+          <span class="result-label">SEMESTER GPA</span>
+          <div class="big-result" id="gpaResult">0.00</div>
+          <p>Weighted average based on your credits.</p>
+          <div class="result-divider"></div>
+          <div class="result-row"><span>Total Credits</span><b id="totalCredits">0</b></div>
+          <div class="result-row"><span>Target CGPA</span><b>8.00</b></div>
+          <div class="result-row"><span>Gap</span><b id="gap">8.00</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section id="schedule" class="section">
+      <div class="page-title"><p class="eyebrow">PLAN YOUR DAY</p><h1>Study Schedule</h1><p>Create focused study sessions and mark them completed.</p></div>
+      <div class="schedule-layout">
+        <div class="panel">
+          <div class="panel-head"><div><h3>Add Study Session</h3><p>Every session becomes part of your revision plan.</p></div></div>
+          <form id="scheduleForm" class="form-grid">
+            <label>Subject<select id="scheduleSubject" required></select></label>
+            <label>Date<input id="scheduleDate" type="date" required></label>
+            <label>Start Time<input id="startTime" type="time" required></label>
+            <label>End Time<input id="endTime" type="time" required></label>
+            <label class="full-field">Topic<input id="scheduleTopic" placeholder="e.g. Normalization, OOP, TCP/IP" required></label>
+            <button class="primary full-field" type="submit">+ Add Study Session</button>
+          </form>
+        </div>
+        <div class="panel schedule-stats">
+          <h3>Today's Plan</h3>
+          <div class="schedule-number" id="todaySessionCount">0</div>
+          <p>sessions planned</p>
+          <div class="progress"><span id="scheduleProgress" style="width:0%"></span></div>
+          <small id="scheduleProgressText">0% completed</small>
+        </div>
+      </div>
+      <div class="panel schedule-list-panel">
+        <div class="panel-head"><div><h3>All Study Sessions</h3><p>Your saved schedule</p></div><button class="outline small-btn" id="clearCompleted">Clear Completed</button></div>
+        <div id="scheduleList"></div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="section">
+      <div class="page-title"><p class="eyebrow">ACTIVE RECALL</p><h1>Daily Subject Quiz</h1><p>Questions are selected from your scheduled subject and topic bank.</p></div>
+      <div id="quizContainer" class="quiz-container"></div>
+    </section>
+
+    <!-- TOPICS -->
+    <section id="topics" class="section">
+      <div class="page-title"><p class="eyebrow">MEMORY SYSTEM</p><h1>Topic Memory</h1><p>Track what you know, what you're learning, and what needs revision.</p></div>
+      <div class="topic-toolbar">
+        <input id="topicSearch" placeholder="Search topics...">
+        <select id="topicFilter"><option value="all">All Topics</option><option value="notstarted">Not Started</option><option value="learning">Learning</option><option value="mastered">Memorized</option></select>
+      </div>
+      <div id="topicGrid" class="topic-grid"></div>
+    </section>
+
+    <!-- SUBJECTS -->
+    <section id="subjects" class="section">
+      <div class="page-title"><p class="eyebrow">YOUR ACADEMICS</p><h1>Subjects</h1><p>Monitor subject performance and revision topics.</p></div>
+      <div class="subject-grid" id="subjectCards"></div>
+    </section>
+
+    <!-- GOALS -->
+    <section id="goals" class="section">
+      <div class="page-title"><p class="eyebrow">STAY MOTIVATED</p><h1>Your Goals</h1><p>Turn your target into small, achievable milestones.</p></div>
+      <div class="goal-layout">
+        <div class="panel goal-big">
+          <span class="goal-badge">CURRENT TARGET</span>
+          <h2>Reach 8.00 CGPA</h2>
+          <p>Current: <b id="goalCurrentCgpa">7.34</b> · Target: 8.00</p>
+          <div class="progress large"><span style="width:82%"></span></div>
+          <h3>82% Complete</h3>
+          <div class="goal-actions"><button class="primary small" onclick="showSection('calculator')">Update CGPA</button></div>
+        </div>
+        <div class="panel milestones">
+          <h3>Milestones</h3>
+          <div class="milestone done"><i>✓</i><div><b>Build study routine</b><small>Completed</small></div></div>
+          <div class="milestone done"><i>✓</i><div><b>Reach 7.50</b><small>Completed</small></div></div>
+          <div class="milestone"><i>3</i><div><b>Reach 8.00</b><small>In progress</small></div></div>
+          <div class="milestone"><i>4</i><div><b>Reach 8.50</b><small>Future goal</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESOURCES -->
+    <section id="resources" class="section">
+      <div class="page-title"><p class="eyebrow">LEARN SMARTER</p><h1>Study Resources</h1><p>Quick revision areas for academics and placements.</p></div>
+      <div class="resource-grid">
+        <article class="resource-card"><div class="resource-icon purple">⌘</div><span>PROGRAMMING</span><h3>Core Java</h3><p>OOP, Collections, Exception Handling, Strings and interview concepts.</p><button onclick="filterTopics('Java')">View Java Topics →</button></article>
+        <article class="resource-card"><div class="resource-icon blue">▤</div><span>DATABASE</span><h3>SQL & DBMS</h3><p>Joins, subqueries, normalization, keys and query optimization.</p><button onclick="filterTopics('DBMS')">View DBMS Topics →</button></article>
+        <article class="resource-card"><div class="resource-icon green">◉</div><span>NETWORKING</span><h3>Computer Networks</h3><p>OSI, TCP/IP, HTTP, routing, TCP handshake and network security.</p><button onclick="filterTopics('Computer Networks')">View CN Topics →</button></article>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
